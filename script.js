@@ -1,41 +1,3 @@
-const startDate = new Date("2025-08-01T00:00:00"); // Change this to your real start date
-
-function updateTimer() {
-  const now = new Date();
-  let diff = now - startDate;
-
-  const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365));
-  diff -= years * 1000 * 60 * 60 * 24 * 365;
-
-  const months = Math.floor(diff / (1000 * 60 * 60 * 24 * 30.44));
-  diff -= months * 1000 * 60 * 60 * 24 * 30.44;
-
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  diff -= days * 1000 * 60 * 60 * 24;
-
-  const hours = Math.floor(diff / (1000 * 60 * 60));
-  diff -= hours * 1000 * 60 * 60;
-
-  const minutes = Math.floor(diff / (1000 * 60));
-  diff -= minutes * 1000 * 60;
-
-  const seconds = Math.floor(diff / 1000);
-
-  function format(num) {
-    return num === 0 ? "—" : String(num).padStart(2, "0");
-  }
-
-  document.getElementById("years").textContent = format(years);
-  document.getElementById("months").textContent = format(months);
-  document.getElementById("days").textContent = format(days);
-  document.getElementById("hours").textContent = format(hours);
-  document.getElementById("minutes").textContent = format(minutes);
-  document.getElementById("seconds").textContent = format(seconds);
-}
-
-setInterval(updateTimer, 1000);
-updateTimer();
-
 // ❤️ "I love you" language changer
 const loveText = document.getElementById("loveText");
 const translations = [
@@ -82,26 +44,118 @@ setInterval(() => {
   memoryImages[currentPhoto].classList.add("active");
 }, 6000);
 
-const digits = document.querySelectorAll('.digit');
+document.addEventListener("DOMContentLoaded", () => {
+  const inputs = document.querySelectorAll(".digit")
+  const lock = document.querySelector(".lock")
+  const unlockBtn = document.querySelector(".unlock-btn")
+  const flashCircle = document.getElementById("flash-circle")
+  const unlockSound = document.getElementById("unlock-sound")
+  unlockSound.volume = .1
 
-digits.forEach((input, index) => {
-  input.addEventListener('input', (e) => {
-    const value = e.target.value;
-    // Solo permite números
-    if (!/^[0-9]$/.test(value)) {
-      e.target.value = '';
-      return;
-    }
-    // Pasa al siguiente campo automáticamente
-    if (value && index < digits.length - 1) {
-      digits[index + 1].focus();
-    }
-  });
+  const correctCode = "0627"
 
-  input.addEventListener('keydown', (e) => {
-    // Retrocede si borras y el campo está vacío
-    if (e.key === 'Backspace' && !input.value && index > 0) {
-      digits[index - 1].focus();
-    }
-  });
-});
+  // ─────────────────────────────
+  // CONFIGURACIÓN INICIAL
+  // ─────────────────────────────
+  inputs.forEach((input, index) => {
+    input.value = ""
+    input.disabled = index !== 0
+    input.inputMode = "numeric"
+  })
+
+  updateGlow()
+
+  // ─────────────────────────────
+  // INPUTS: SOLO NÚMEROS + AUTOFOCUS
+  // ─────────────────────────────
+  inputs.forEach((input, index) => {
+
+    input.addEventListener("input", () => {
+      input.value = input.value.replace(/[^0-9]/g, "")
+
+      if (input.value && index < inputs.length - 1) {
+        inputs[index + 1].disabled = false
+        inputs[index + 1].focus()
+      }
+
+      updateGlow()
+    })
+
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Backspace" && !input.value && index > 0) {
+        inputs[index - 1].value = ""
+        inputs[index - 1].focus()
+        inputs[index].disabled = true
+        updateGlow()
+      }
+    })
+  })
+
+  function fadeOutAudio(audio, duration = 1000) {
+    const step = audio.volume / (duration / 50)
+
+    const fade = setInterval(() => {
+      audio.volume = Math.max(0, audio.volume - step)
+      if (audio.volume <= 0) {
+        clearInterval(fade)
+        audio.pause()
+      }
+    }, 50)
+  }
+
+
+  // ─────────────────────────────
+  // EFECTO DE BRILLO PROGRESIVO
+  // ─────────────────────────────
+  function updateGlow() {
+    lock.classList.remove("glow-1", "glow-2", "glow-3", "glow-4")
+
+    const filled = [...inputs].filter(i => i.value).length
+    if (filled > 0) lock.classList.add(`glow-${filled}`)
+  }
+
+  // ─────────────────────────────
+  // BOTÓN UNLOCK → WOW SEQUENCE
+  // ─────────────────────────────
+
+  unlockBtn.addEventListener("click", () => {
+    const enteredCode = [...inputs].map(i => i.value).join("")
+    if (enteredCode !== correctCode) return
+
+    // SOUND
+
+
+    // SHAKE
+    lock.classList.add("open")
+
+    setTimeout(() => {
+      // POSICIÓN EXACTA DEL CANDADO
+      const rect = lock.getBoundingClientRect()
+      const centerX = rect.left + rect.width / 2
+      const centerY = rect.top + rect.height / 2
+
+      flashCircle.style.left = `${centerX}px`
+      flashCircle.style.top = `${centerY}px`
+
+      // TAMAÑO GIGANTE (IMPOSSIBLE DE FALLAR)
+      const maxSize = Math.max(window.innerWidth, window.innerHeight) * 3
+
+      flashCircle.style.width = `${maxSize}px`
+      flashCircle.style.height = `${maxSize}px`
+
+      unlockSound.currentTime = 0
+      unlockSound.play()
+      setTimeout(() => {
+        fadeOutAudio(unlockSound, 1200)
+      }, 1200)
+
+      // REDIRECCIÓN
+      setTimeout(() => {
+        window.location.href = "secret.html"
+      }, 2400)
+
+    }, 1500)
+  })
+
+
+})

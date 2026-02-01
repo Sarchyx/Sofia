@@ -1,21 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Para Mi Amor ❤️</title>
+  <title>Para Mi Amor</title>
+  <link rel="icon" href="assets/icon.ico">
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
   <header>
     <h1 class="main-title">Sofia</h1>
     <p class="subtitle">Cada parte de mí ama cada parte de ti.</p>
-	<section class="love-section">
-		<h2 class="love-title" id="loveText">I love you</h2>
-	  </section>
+    <section class="love-section">
+      <h2 class="love-title" id="loveText">I love you</h2>
+    </section>
   </header>
 
   <main>
+    <!--
     <div class="time-container">
       <h2 class="time-title">Tiempo Juntos ❤️</h2>
       <div class="timer">
@@ -46,38 +50,43 @@
       </div>
     </div>
 
-	<section class="memories">
-		<h2>Fotitos</h2>
-		<div class="memory-frame">
-		  <img src="assets/1.jpeg" alt="Memory 1" class="active">
-		  <img src="assets/2.jpeg" alt="Memory 2">
-		  <img src="assets/3.jpeg" alt="Memory 3">
-		  <img src="assets/4.jpeg" alt="Memory 4">
-		  <img src="assets/5.jpeg" alt="Memory 5">
-		  <img src="assets/6.jpeg" alt="Memory 6">
-		  <img src="assets/7.jpeg" alt="Memory 7">
-		</div>
-	  </section>	 
-	  
-	  <section class="lock-section">
-		<h2 class="lock-title">Candado Secreto 🤫</h2>
-		<div class="lock-container">
-		  <div class="lock">
-			<img src="assets/real-lock.png" alt="Lock image" class="lock-img">
-		  </div>
-		  <div class="lock-inputs">
-			<input type="password" maxlength="1" class="digit">
-			<input type="password" maxlength="1" class="digit">
-			<input type="password" maxlength="1" class="digit">
-			<input type="password" maxlength="1" class="digit">
-		  </div>
-		  <button class="unlock-btn">Abrir</button>
-		</div>
-	  </section>
-		
+-->
+
+    <section class="memories">
+      <h2>Fotitos</h2>
+      <div class="memory-frame">
+        <img src="assets/1.jpeg" alt="Memory 1" class="active">
+        <img src="assets/2.jpeg" alt="Memory 2">
+        <img src="assets/3.jpeg" alt="Memory 3">
+        <img src="assets/4.jpeg" alt="Memory 4">
+        <img src="assets/5.jpeg" alt="Memory 5">
+        <img src="assets/6.jpeg" alt="Memory 6">
+        <img src="assets/7.jpeg" alt="Memory 7">
+      </div>
+    </section>
+
+    <section class="lock-section">
+      <h2 class="lock-title">Candado Secreto 🤫</h2>
+      <div class="lock-container">
+        <div class="lock">
+          <img src="assets/real-lock.png" alt="Lock image" class="lock-img">
+        </div>
+
+        <div class="lock-inputs">
+          <input type="password" maxlength="1" class="digit">
+          <input type="password" maxlength="1" class="digit">
+          <input type="password" maxlength="1" class="digit">
+          <input type="password" maxlength="1" class="digit">
+        </div>
+        <button class="unlock-btn">Abrir</button>
+      </div>
+    </section>
   </main>
-
-
+  <div id="flash-circle"></div>
+  <audio id="unlock-sound" preload="auto">
+    <source src="assets/success-sound.mp3" type="audio/mpeg">
+  </audio>
   <script src="script.js"></script>
 </body>
+
 </html>
